@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title">Editar Departamento</h4>
+</div>
+<div class="modal-body">
+
+    <div class="form-group form-floating mb-3">
+        <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Título" [(ngModel)]="titulo" />
+        <label for="titulo" class="form-label">Título</label>
+    </div>
+
+    <div class="form-group form-floating mb-3">
+        <select class="form-select" name="responsavelId" id="responsavelId" [(ngModel)]="responsavelId">
+            <option value="0">Select...</option>
+            <option *ngFor="let colaborador of colaboradores" value={{colaborador.id}}>{{colaborador.nome}}</option>
+        </select>
+        <label htmlFor="responsavelId" className="form-label">Responsável</label>
+    </div>
+
+    <div *ngIf="errors > 0" class="form-group shadow mb-3">
+        <span class="text-danger">{{errorMessage}}</span>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <div class="d-flex justify-content-between w-100">
+        <button type="button" class="btn btn-success btn-sm w-100" (click)="activeModal.close()">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-sm w-100" (click)="save()">Salvar</button>
+    </div>
+</div>

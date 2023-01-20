@@ -1,0 +1,62 @@
+<div class="modal-header">
+    <h4 class="modal-title">Nova Pessoa {{getTipoPessoa()}}</h4>
+</div>
+<div class="modal-body">
+
+    <div *ngIf="tipo === tipoPessoaEnum.Fisica">
+        <div class="form-group form-floating mb-3">
+            <input type="text" name="nome" id="nome" class="form-control" placeholder="Nome" [(ngModel)]="nome" />
+            <label for="nome" class="form-label">Nome</label>
+        </div>
+        <div class="form-group form-floating mb-3">
+            <input type="text" name="apelido" id="apelido" class="form-control" placeholder="Apelido" [(ngModel)]="apelido" />
+            <label for="apelido" class="form-label">Apelido</label>
+        </div>
+        <div class="form-group form-floating mb-3">
+            <input type="text" name="cpf" id="cpf" class="form-control" placeholder="CPF" [(ngModel)]="cpf" />
+            <label for="cpf" class="form-label">CPF</label>
+        </div>
+    </div>
+
+    <div *ngIf="tipo === tipoPessoaEnum.Juridica">
+        <div class="form-group form-floating mb-3">
+            <input type="text" name="nome" id="nome" class="form-control" placeholder="Razão Social" [(ngModel)]="nome" />
+            <label for="nome" class="form-label">Razão Social</label>
+        </div>
+        <div class="form-group form-floating mb-3">
+            <input type="text" name="apelido" id="apelido" class="form-control" placeholder="Nome Fantasia" [(ngModel)]="apelido" />
+            <label for="apelido" class="form-label">Nome Fantasia</label>
+        </div>
+        <div class="form-group form-floating mb-3">
+            <input type="text" name="cnpj" id="cnpj" class="form-control" placeholder="CNPJ" [(ngModel)]="cnpj" />
+            <label for="cnpj" class="form-label">CNPJ</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="checkbox" class="form-check-input m-1"
+            id="cliente" name="cliente" value="cliente" [(ngModel)]="cliente" />
+        <label for="cliente" class="form-label m-1">Cliente</label>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" class="form-check-input m-1"
+            id="fornecedor" name="fornecedor" value="fornecedor" [(ngModel)]="fornecedor" />
+        <label for="fornecedor" class="form-label m-1">Fornecedor</label>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" class="form-check-input m-1"
+            id="colaborador" name="colaborador" value="colaborador" [(ngModel)]="colaborador" />
+        <label for="colaborador" class="form-label m-1">Colaborador</label>
+    </div>
+
+    <div *ngIf="errors > 0" class="form-group shadow mb-3">
+        <span class="text-danger">{{errorMessage}}</span>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <div class="d-flex justify-content-between w-100">
+        <button type="button" class="btn btn-success btn-sm w-100" (click)="activeModal.close()">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-sm w-100" (click)="save()">Salvar</button>
+    </div>
+</div>

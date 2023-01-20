@@ -1,0 +1,65 @@
+<main class="container">
+    <span *ngIf="errors > 0" class="text-danger m-1">
+        <img class="small-icon" src="/assets/img/x-button.png" title="Error" alt="Error" />
+        <span class="m-1">{{errorMessage}}</span>
+    </span>
+    <span *ngIf="sucesso > 0" class="text-success m-1">
+        <img class="small-icon" src="/assets/img/check.png" title="Sucesso" alt="Sucesso" />
+        <span class="m-1">{{sucessoMessage}}</span>
+    </span>
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <button type="button" class="btn btn-primary btn-sm w-100" (click)="showCreatePessoa(1)">Nova Pessoa Física</button>
+        </div>
+        <div class="col-md-4 mb-3">
+            <button type="button" class="btn btn-primary btn-sm w-100" (click)="showCreatePessoa(2)">Nova Pessoa Jurídica</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <input type="text" class="form-control form-control-sm" placeholder="Pesquisar" [(ngModel)]="nome" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group mb-3">
+                <button type="button" class="btn btn-outline-primary btn-sm w-100" (click)="handleSearch()" >Pesquisar</button>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="6">TOTAL DE PESSOAS: {{count}}</th>
+            </tr>
+            <tr>
+                <th>ID</th>
+                <th>TIPO</th>
+                <th>NOME/RAZÃO SOCIAL</th>
+                <th>CPF/CNPJ</th>
+                <th>QUALIFICAÇÃO</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let pessoa of filteredPessoas; let i = index">
+                <td>{{pessoa.id}}</td>
+                <td>{{getTipoPessoa(pessoa.tipo)}}</td>
+                <td>{{pessoa.nome}}</td>
+                <td>{{pessoa.tipo === tipoPessoaEnum.Fisica ? pessoa.cpf : pessoa.cnpj}}</td>
+                <td>
+                    <span class="w-100 mt-1">{{pessoa.cliente === true ? "Cliente " : ""}}</span>
+                    <span class="w-100 mt-1">{{pessoa.fornecedor === true ? "Fornecedor " : ""}}</span>
+                    <span class="w-100 mt-1">{{pessoa.colaborador === true ? "Colaborador" : ""}}</span>
+                </td>
+                <td class="d-flex justify-content-between">
+                    <a class='btn btn-primary btn-sm w-100' routerLink="/pessoas/{{pessoa.id}}">Detalhes</a>
+                    <button type="button" class="btn btn-secondary btn-sm w-100"
+                        (click)="showEditPessoa(pessoa)">Editar</button>
+                    <button type="button" class="btn btn-danger btn-sm w-100"
+                        (click)="handleDelete(pessoa.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>

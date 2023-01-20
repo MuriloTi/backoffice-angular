@@ -1,0 +1,118 @@
+<main class="container">
+    <span *ngIf="errors > 0" class="text-danger m-1">
+        <img class="small-icon" src="/assets/img/x-button.png" title="Error" alt="Error" />
+        <span class="m-1">{{errorMessage}}</span>
+    </span>
+    <span *ngIf="sucesso > 0" class="text-success m-1">
+        <img class="small-icon" src="/assets/img/check.png" title="Sucesso" alt="Sucesso" />
+        <span class="m-1">{{sucessoMessage}}</span>
+    </span>
+    <div *ngIf="pessoa" class="card shadow-lg">
+        <div class="card-body">
+            <div class="w-100 text-center">
+                <h5>Detalhes da Pessoa</h5>
+            </div>
+            <div class="row justify-content-between">
+                <div class="col-md-4">
+                    <div *ngIf="pessoa.tipo === tipoPessoaEnum.Fisica">
+                        <strong>Nome: </strong><span>{{pessoa.nome}}</span>
+                        <br />
+                        <strong>Apelido: </strong><span>{{pessoa.apelido}}</span>
+                    </div>
+                    <div *ngIf="pessoa.tipo === tipoPessoaEnum.Juridica">
+                        <strong>Razão Social: </strong><span>{{pessoa.nome}}</span>
+                        <br />
+                        <strong>Nome Fantasia: </strong><span>{{pessoa.apelido}}</span>
+                    </div>
+                    <strong>Modalidades: </strong><span>{{pessoa.cliente ? "Cliente " : ""}}{{pessoa.fornecedor ? "Fornecedor " : ""}}{{pessoa.colaborador ? "Colaborador" : ""}}</span>
+                    <br />
+                    <button type="button" class="btn btn-secondary btn-sm col-md-6 mt-2" (click)="showEditPessoa()">Editar</button>
+                </div>
+                <div class="col-md-4">
+                    <strong>Id: </strong><span>{{pessoa.id}}</span>
+                    <br />
+                    <strong>Tipo: </strong><span>Pessoa {{getTipoPessoa(pessoa.tipo)}}</span>
+                    <br />
+                    <strong>CPF/CNPJ: </strong><span>{{pessoa.tipo === tipoPessoaEnum.Fisica ? pessoa.cpf : pessoa.cnpj}}</span>
+                </div>
+                <div class="col-md-4 text-end">
+                    <strong>Data de Criação: </strong><span>{{formatDate(pessoa.dataCriacao)}}</span>
+                    <br />
+                    <strong>Última Alteração: </strong><span>{{formatDate(pessoa.dataUltimaAlteracao)}}</span>
+                    <br />
+                </div>
+            </div>
+
+            
+            <ul ngbNav #nav="ngbNav" [(activeId)]="activeNav" class="nav-tabs mt-4">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>Endereços</a>
+                    <ng-template ngbNavContent>
+                        <div class="row mt-4">
+                            <div class="col-md-4 mb-3">
+                                <button type="button" class="btn btn-primary btn-sm w-100" (click)="showCreateEndereco()">Novo Endereço</button>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="5">TOTAL DE ENDEREÇOS: {{countEnderecos}}</th>
+                                </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>ENDEREÇO COMPLETO</th>
+                                    <th>DATA DE CRIAÇÃO</th>
+                                    <th>DATA DE ALTERAÇÃO</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let endereco of pessoa.enderecos">
+                                    <td>{{endereco.id}}</td>
+                                    <td>{{getEnderecoCompleto(endereco)}}</td>
+                                    <td>{{formatDate(endereco.dataCriacao)}}</td>
+                                    <td>{{formatDate(endereco.dataUltimaAlteracao)}}</td>
+                                    <td class="d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary btn-sm w-100"
+                                            (click)="showEditEndereco(endereco)">Editar</button>
+                                        <button type="button" class="btn btn-danger btn-sm w-100"
+                                            (click)="handleDelete(endereco.id)">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+                <li *ngIf="pessoa.colaborador === true" [ngbNavItem]="2">
+                    <a ngbNavLink>Departamentos</a>
+                    <ng-template ngbNavContent>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">TOTAL DE DEPARTAMENTOS: {{countDepartamentos}}</th>
+                                </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>DEPARTAMENTO</th>
+                                    <th>DATA DE CRIAÇÃO</th>
+                                    <th>DATA DE ALTERAÇÃO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let departamento of pessoa.departamentos">
+                                    <td>{{departamento.id}}</td>
+                                    <td>{{departamento.titulo}}</td>
+                                    <td>{{formatDate(departamento.dataCriacao)}}</td>
+                                    <td>{{formatDate(departamento.dataUltimaAlteracao)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+            </ul>
+            
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+        </div>
+    </div>
+</main>

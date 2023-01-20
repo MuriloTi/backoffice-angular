@@ -1,0 +1,53 @@
+<main class="container">
+    <span *ngIf="errors > 0" class="text-danger m-1">
+        <img class="small-icon" src="/assets/img/x-button.png" title="Error" alt="Error" />
+        <span class="m-1">{{errorMessage}}</span>
+    </span>
+    <span *ngIf="sucesso > 0" class="text-success m-1">
+        <img class="small-icon" src="/assets/img/check.png" title="Sucesso" alt="Sucesso" />
+        <span class="m-1">{{sucessoMessage}}</span>
+    </span>
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <button type="button" class="btn btn-primary btn-sm w-100" (click)="showCreateDepartamento()">Novo Departamento</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="form-group mb-3">
+                <input type="text" class="form-control form-control-sm" placeholder="Pesquisar" [(ngModel)]="titulo" />
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group mb-3">
+                <button type="button" class="btn btn-outline-primary btn-sm w-100" (click)="handleSearch()" >Pesquisar</button>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="4">TOTAL DE DEPARTAMENTOS: {{count}}</th>
+            </tr>
+            <tr>
+                <th>ID</th>
+                <th>TITULO</th>
+                <th>RESPONSÁVEL</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let departamento of filteredDepartamentos">
+                <td>{{departamento.id}}</td>
+                <td>{{departamento.titulo}}</td>
+                <td>{{departamento.nomeResponsavel}}</td>
+                <td class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary btn-sm w-100"
+                        (click)="showEditDepartamento(departamento)">Editar</button>
+                    <button type="button" class="btn btn-danger btn-sm w-100"
+                        (click)="handleDelete(departamento.id)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
