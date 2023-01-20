@@ -32,15 +32,17 @@ export class PessoasListComponent implements OnInit {
 
   getObjects(): void {
     this.pessoaService.getAll()
-      .subscribe(data => {
-        this.pessoas = data;
-        this.filteredPessoas = data;
-        this.count = data.length;
-        this.errors = 0;
-      }, error => {
-        console.log(error);
-        this.errors++;
-        this.errorMessage = "Ocorreu um erro ao buscar os itens da API";
+      .subscribe({
+        next: (data) => {
+          this.pessoas = data;
+          this.filteredPessoas = data;
+          this.count = data.length;
+          this.errors = 0;
+        }, error: (error) => {
+          console.log(error);
+          this.errors++;
+          this.errorMessage = "Ocorreu um erro ao buscar os itens da API";
+        }
       });
   }
 
@@ -52,7 +54,7 @@ export class PessoasListComponent implements OnInit {
     const result = this.modalService.open(PessoasCreateComponent);
     result.componentInstance.tipo = tipo;
     result.closed.subscribe(result => {
-      if (result === "Created"){
+      if (result === "Created") {
         this.sucesso++;
         this.sucessoMessage = "Pessoa criada com sucesso!";
         this.atualizarLista();
@@ -72,7 +74,7 @@ export class PessoasListComponent implements OnInit {
     result.componentInstance.fornecedor = pessoa.fornecedor;
     result.componentInstance.colaborador = pessoa.colaborador;
     result.closed.subscribe(result => {
-      if (result === "Updated"){
+      if (result === "Updated") {
         this.sucesso++;
         this.sucessoMessage = "Pessoa atualizada com sucesso!";
         this.atualizarLista();
@@ -80,25 +82,29 @@ export class PessoasListComponent implements OnInit {
     });
   }
 
-  handleSearch(): void{
+  handleSearch(): void {
     this.filteredPessoas = this.pessoas.filter((item: any) => item.nome.toUpperCase().includes(this.nome.toUpperCase()));
     this.count = this.filteredPessoas.length;
   }
 
-  getTipoPessoa(tipo: any): string{
+  getTipoPessoa(tipo: any): string {
     return GetTipo(tipo);
   }
 
-  handleDelete(id: any): void{
+  handleDelete(id: any): void {
     this.pessoaService.delete(id)
-      .subscribe(() => {
-        this.sucesso++;
-        this.sucessoMessage = "Pessoa removida com sucesso!";
-        this.atualizarLista();
-      }, error => {
-        this.errors++;
-        this.errorMessage = error.error;
-      });
+      .subscribe({
+        next: () => {
+          this.sucesso++;
+          this.sucessoMessage = "Pessoa removida com sucesso!";
+          this.atualizarLista();
+        },
+        error: (erro) => {
+          this.errors++;
+          this.errorMessage = erro.error;
+        }
+      })
+
   }
 
 }

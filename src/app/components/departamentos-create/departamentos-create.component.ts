@@ -17,25 +17,27 @@ export class DepartamentosCreateComponent {
   errors = 0;
   errorMessage: any;
 
-  constructor(public activeModal: NgbActiveModal, private departamentoService: DepartamentosService){}
+  constructor(public activeModal: NgbActiveModal, private departamentoService: DepartamentosService) { }
 
-  postObject(){
+  postObject() {
     const departamento = {
       titulo: this.titulo,
       responsavelId: this.responsavelId,
     };
 
     this.departamentoService.post(departamento)
-      .subscribe(() => {
-        this.activeModal.close("Created");
-      }, error => {
-        console.log(error.error);
-        this.errors++;
-        this.errorMessage = error.error;
+      .subscribe({
+        next: () => {
+          this.activeModal.close("Created");
+        }, error: (error) => {
+          console.log(error.error);
+          this.errors++;
+          this.errorMessage = error.error;
+        }
       });
   }
 
-  save(){
+  save() {
     this.postObject();
   }
 

@@ -24,13 +24,13 @@ export class PessoasEditComponent {
   errors = 0;
   errorMessage: any;
 
-  constructor(public activeModal: NgbActiveModal, private pessoasService: PessoasService){}
+  constructor(public activeModal: NgbActiveModal, private pessoasService: PessoasService) { }
 
-  getTipoPessoa(){
+  getTipoPessoa() {
     return GetTipo(this.tipo);
   }
 
-  updateObject(){
+  updateObject() {
     const pessoa = {
       tipo: this.tipo,
       nome: this.nome,
@@ -41,18 +41,20 @@ export class PessoasEditComponent {
       fornecedor: this.fornecedor,
       colaborador: this.colaborador
     };
-    
+
     this.pessoasService.update(this.id, pessoa)
-      .subscribe(() => {
-        this.activeModal.close("Updated");
-      }, error => {
-        console.log(error.error);
-        this.errors++;
-        this.errorMessage = error.error;
+      .subscribe({
+        next: () => {
+          this.activeModal.close("Updated");
+        }, error: (error) => {
+          console.log(error.error);
+          this.errors++;
+          this.errorMessage = error.error;
+        }
       });
   }
 
-  save(){
+  save() {
     this.updateObject();
   }
 

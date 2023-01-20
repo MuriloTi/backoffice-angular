@@ -30,25 +30,29 @@ export class DepartamentosListComponent {
 
   getObjects(): void {
     this.departamentoService.getAll()
-      .subscribe(data => {
-        const result = data.sort((a: any, b: any) => a.titulo.localeCompare(b.title))
-        this.departamentos = result;
-        this.filteredDepartamentos = result;
-        this.count = result.length;
-        this.pessoaService.getAll()
-          .subscribe(data => {
-            const result = data.filter((item: any) => item.colaborador === true).sort((a: any, b: any) => a.nome.localeCompare(b.nome));
-            this.colaboradores = result;
-            this.errors = 0;
-          }, error => {
-            console.log(error);
-            this.errors++;
-            this.errorMessage = "Ocorreu um erro ao buscar os itens da API";
-          });
-      }, error => {
-        console.log(error);
-        this.errors++;
-        this.errorMessage = "Ocorreu um erro ao buscar os itens da API";
+      .subscribe({
+        next: (data) => {
+          const result = data.sort((a: any, b: any) => a.titulo.localeCompare(b.title))
+          this.departamentos = result;
+          this.filteredDepartamentos = result;
+          this.count = result.length;
+          this.pessoaService.getAll()
+            .subscribe({
+              next: (data) => {
+                const result = data.filter((item: any) => item.colaborador === true).sort((a: any, b: any) => a.nome.localeCompare(b.nome));
+                this.colaboradores = result;
+                this.errors = 0;
+              }, error: (error) => {
+                console.log(error);
+                this.errors++;
+                this.errorMessage = "Ocorreu um erro ao buscar os itens da API";
+              }
+            });
+        }, error: (error) => {
+          console.log(error);
+          this.errors++;
+          this.errorMessage = "Ocorreu um erro ao buscar os itens da API";
+        }
       });
   }
 
@@ -90,13 +94,15 @@ export class DepartamentosListComponent {
 
   handleDelete(id: any): void {
     this.departamentoService.delete(id)
-      .subscribe(() => {
-        this.sucesso++;
-        this.sucessoMessage = "Departamento removido com sucesso!";
-        this.atualizarLista();
-      }, error => {
-        this.errors++;
-        this.errorMessage = error.error;
+      .subscribe({
+        next: () => {
+          this.sucesso++;
+          this.sucessoMessage = "Departamento removido com sucesso!";
+          this.atualizarLista();
+        }, error: (error) => {
+          this.errors++;
+          this.errorMessage = error.error;
+        }
       });
   }
 

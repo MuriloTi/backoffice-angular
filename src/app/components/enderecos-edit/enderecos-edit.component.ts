@@ -35,14 +35,16 @@ export class EnderecosEditComponent {
       numero: this.numero,
       complemento: this.complemento
     };
-    
+
     this.enderecoService.update(this.id, endereco)
-      .subscribe(() => {
-        this.activeModal.close("Updated");
-      }, error => {
-        console.log(error.error);
-        this.errors++;
-        this.errorMessage = error.error;
+      .subscribe({
+        next: () => {
+          this.activeModal.close("Updated");
+        }, error: (error) => {
+          console.log(error.error);
+          this.errors++;
+          this.errorMessage = error.error;
+        }
       });
   }
 
@@ -50,19 +52,21 @@ export class EnderecosEditComponent {
     this.updateObject();
   }
 
-  handlePesquisarCEP(){
+  handlePesquisarCEP() {
     this.viaCEPService.get(this.cep)
-        .subscribe(data => {
+      .subscribe({
+        next: (data) => {
           this.cep = data.cep;
           this.estado = data.uf;
           this.cidade = data.localidade;
           this.bairro = data.bairro;
           this.logradouro = data.logradouro;
           this.cepErrorMessage = '';
-        }, error => {
+        }, error: (error) => {
           console.log(error);
           this.cepErrorMessage = "CEP Inválido !";
-        });
+        }
+      });
   }
 
 }

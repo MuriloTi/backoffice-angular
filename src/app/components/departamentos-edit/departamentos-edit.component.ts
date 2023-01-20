@@ -18,25 +18,27 @@ export class DepartamentosEditComponent {
   errors = 0;
   errorMessage: any;
 
-  constructor(public activeModal: NgbActiveModal, private departamentoService: DepartamentosService){}
+  constructor(public activeModal: NgbActiveModal, private departamentoService: DepartamentosService) { }
 
-  updateObject(){
+  updateObject() {
     const departamento = {
       titulo: this.titulo,
       responsavelId: this.responsavelId,
     };
 
     this.departamentoService.update(this.id, departamento)
-      .subscribe(() => {
-        this.activeModal.close("Updated");
-      }, error => {
-        console.log(error.error);
-        this.errors++;
-        this.errorMessage = error.error;
+      .subscribe({
+        next: () => {
+          this.activeModal.close("Updated");
+        }, error: (error) => {
+          console.log(error.error);
+          this.errors++;
+          this.errorMessage = error.error;
+        }
       });
   }
 
-  save(){
+  save() {
     this.updateObject();
   }
 

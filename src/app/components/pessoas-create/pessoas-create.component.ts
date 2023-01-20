@@ -23,13 +23,13 @@ export class PessoasCreateComponent {
   errors = 0;
   errorMessage: any;
 
-  constructor(public activeModal: NgbActiveModal, private pessoasService: PessoasService){}
+  constructor(public activeModal: NgbActiveModal, private pessoasService: PessoasService) { }
 
-  getTipoPessoa(){
+  getTipoPessoa() {
     return GetTipo(this.tipo);
   }
 
-  postObject(){
+  postObject() {
     const pessoa = {
       tipo: this.tipo,
       nome: this.nome,
@@ -42,16 +42,18 @@ export class PessoasCreateComponent {
     };
 
     this.pessoasService.post(pessoa)
-      .subscribe(() => {
-        this.activeModal.close("Created");
-      }, error => {
-        console.log(error.error);
-        this.errors++;
-        this.errorMessage = error.error;
+      .subscribe({
+        next: () => {
+          this.activeModal.close("Created");
+        }, error: (error) => {
+          console.log(error.error);
+          this.errors++;
+          this.errorMessage = error.error;
+        }
       });
   }
 
-  save(){
+  save() {
     this.postObject();
   }
 
